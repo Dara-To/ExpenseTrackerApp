@@ -49,11 +49,15 @@ enum TransactionType: String {
     case credit = "credit"
 }
 
-struct Category {
+struct Category: Identifiable {
     let id: Int
     let name: String
     let icon: FontAwesomeCode
     var mainCategoryId: Int?
+    
+    var subcategories: [Category]? {
+        Category.subCategories.filter { $0.mainCategoryId == id }
+    }
 }
 
 extension Category {
