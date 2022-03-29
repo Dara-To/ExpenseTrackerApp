@@ -42,6 +42,14 @@ struct Transaction: Identifiable, Decodable, Hashable {
     var month: String {
         dateParsed.formatted(.dateTime.year().month(.wide))
     }
+    
+    var categoryItem: Category {
+        if let category = Category.all.first(where: { $0.id == categoryId }) {
+            return category
+        }
+        
+        return .shopping
+    }
 }
 
 enum TransactionType: String {

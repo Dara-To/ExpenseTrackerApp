@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CategoriesView: View {
     var transaction: Transaction
+    @EnvironmentObject var transactionListVM: TransactionListViewModel
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         List {
@@ -19,12 +21,20 @@ struct CategoriesView: View {
                         let isSelected = transaction.categoryId == subcategory.id
                         
                         CategoryRow(category: subcategory, isSelected: isSelected)
+                            .onTapGesture {
+                                transactionListVM.updateCategory(transaction: transaction, category: subcategory)
+                                dismiss()
+                            }
                     }
                 } header: {
                     // MARK: Categories
                     let isSelected = transaction.categoryId == category.id
                     
                     CategoryRow(category: category, isSelected: isSelected)
+                        .onTapGesture {
+                            transactionListVM.updateCategory(transaction: transaction, category: category)
+                            dismiss()
+                        }
                 }
             }
         }
@@ -41,5 +51,6 @@ struct CategoriesView_Previews: PreviewProvider {
             CategoriesView(transaction: transactionPreviewData)
                 .preferredColorScheme(.dark)
         }
+        .environmentObject(TransactionListViewModel())
     }
 }
